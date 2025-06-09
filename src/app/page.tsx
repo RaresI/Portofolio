@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from "react";
-import { FaGithub, FaLinkedin, FaEnvelope, FaPhone, FaMapMarkerAlt, FaArrowDown, FaCode, FaShieldAlt, FaUserTie, FaGraduationCap, FaBars, FaTimes } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaEnvelope, FaPhone, FaMapMarkerAlt, FaCode, FaShieldAlt, FaUserTie, FaGraduationCap, FaBars, FaTimes } from 'react-icons/fa';
 import ProjectCard from './components/ProjectCard';
 import ProjectModal from './components/ProjectModal';
 import dynamic from 'next/dynamic';
@@ -178,7 +178,7 @@ export default function Home() {
                 transition={{ duration: 0.5 }}
                 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6"
               >
-                Hi, I'm{" "}
+                Hi, I&apos;m{" "}
                 <span className="text-blue-600 dark:text-blue-400">Rares-Andrei Ionescu</span>
               </motion.h1>
               <motion.p

@@ -26,6 +26,24 @@ export async function POST(request: Request) {
       );
     }
 
+    // Check if SendGrid API key is configured
+    if (!process.env.SENDGRID_API_KEY) {
+      console.error('SendGrid API key is not configured');
+      return NextResponse.json(
+        { error: 'Contact form is temporarily unavailable. Please try again later or reach out via email.' },
+        { status: 503 }
+      );
+    }
+
+    // Validate SendGrid API key format
+    if (!process.env.SENDGRID_API_KEY.startsWith('SG.')) {
+      console.error('Invalid SendGrid API key format');
+      return NextResponse.json(
+        { error: 'Contact form is temporarily unavailable. Please try again later or reach out via email.' },
+        { status: 503 }
+      );
+    }
+
     // Prepare email content
     const msg = {
       to: 'ionescurares2003@gmail.com', // Changed to your accessible email
@@ -55,10 +73,22 @@ ${message}
       { message: 'Email sent successfully' },
       { status: 200 }
     );
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error sending email:', error);
+    
+    // Handle specific SendGrid errors
+    if (error.response?.body?.errors) {
+      const sendgridError = error.response.body.errors[0];
+      if (sendgridError.message.includes('API key')) {
+        return NextResponse.json(
+          { error: 'Contact form is temporarily unavailable. Please try again later or reach out via email.' },
+          { status: 503 }
+        );
+      }
+    }
+
     return NextResponse.json(
-      { error: 'Failed to send email' },
+      { error: 'Failed to send message. Please try again later.' },
       { status: 500 }
     );
   }

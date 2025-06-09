@@ -1,6 +1,17 @@
 import { NextResponse } from 'next/server';
 import sgMail from '@sendgrid/mail';
 
+// Define the error type for SendGrid
+interface SendGridError extends Error {
+  response?: {
+    body?: {
+      errors?: Array<{
+        message: string;
+      }>;
+    };
+  };
+}
+
 // Initialize SendGrid with API key
 // You'll need to set this in your environment variables
 sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
@@ -73,13 +84,14 @@ ${message}
       { message: 'Email sent successfully' },
       { status: 200 }
     );
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error sending email:', error);
     
     // Handle specific SendGrid errors
-    if (error.response?.body?.errors) {
-      const sendgridError = error.response.body.errors[0];
-      if (sendgridError.message.includes('API key')) {
+    const sendgridError = error as SendGridError;
+    if (sendgridError.response?.body?.errors) {
+      const firstError = sendgridError.response.body.errors[0];
+      if (firstError.message.includes('API key')) {
         return NextResponse.json(
           { error: 'Contact form is temporarily unavailable. Please try again later or reach out via email.' },
           { status: 503 }

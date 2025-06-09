@@ -111,9 +111,16 @@ export default function Home() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
               <div className="flex items-center gap-2">
-                <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 bg-clip-text text-transparent animate-gradient">
+                <a 
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 bg-clip-text text-transparent animate-gradient hover:opacity-80 transition-opacity duration-300"
+                >
                   rares-ionescu.dev
-                </span>
+                </a>
               </div>
               
               {/* Mobile menu button */}
@@ -128,7 +135,7 @@ export default function Home() {
 
               {/* Desktop Navigation */}
               <div className="hidden md:flex gap-8">
-                {['about', 'skills', 'projects', 'experience', 'contact'].map((item) => (
+                {['about', 'skills', 'projects', 'education', 'contact'].map((item) => (
                   <a
                     key={item}
                     href={`#${item}`}
@@ -149,7 +156,7 @@ export default function Home() {
               className="md:hidden overflow-hidden"
             >
               <div className="py-4 space-y-4">
-                {['about', 'skills', 'projects', 'experience', 'contact'].map((item) => (
+                {['about', 'skills', 'projects', 'education', 'contact'].map((item) => (
                   <a
                     key={item}
                     href={`#${item}`}

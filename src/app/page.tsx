@@ -157,21 +157,24 @@ export default function Home() {
             >
               <div className="py-4 space-y-4">
                 {['about', 'skills', 'projects', 'education', 'contact'].map((item) => (
-                  <a
+                  <button
                     key={item}
-                    href={`#${item}`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      const element = document.getElementById(item);
-                      if (element) {
-                        element.scrollIntoView({ behavior: 'smooth' });
-                        setIsMenuOpen(false);
-                      }
+                    type="button"
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                      setTimeout(() => {
+                        const element = document.getElementById(item);
+                        if (element) {
+                          const yOffset = -80;
+                          const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                          window.scrollTo({ top: y, behavior: 'smooth' });
+                        }
+                      }, 100);
                     }}
-                    className="block px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors capitalize"
+                    className="w-full text-left px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors capitalize focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     {item}
-                  </a>
+                  </button>
                 ))}
               </div>
             </motion.div>

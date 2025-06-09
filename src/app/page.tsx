@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from "react";
-import { FaGithub, FaLinkedin, FaEnvelope, FaPhone, FaMapMarkerAlt, FaArrowDown, FaCode, FaShieldAlt, FaUserTie, FaGraduationCap } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaEnvelope, FaPhone, FaMapMarkerAlt, FaArrowDown, FaCode, FaShieldAlt, FaUserTie, FaGraduationCap, FaBars, FaTimes } from 'react-icons/fa';
 import ProjectCard from './components/ProjectCard';
 import ProjectModal from './components/ProjectModal';
 import dynamic from 'next/dynamic';
@@ -26,6 +26,7 @@ export default function Home() {
     damping: 30,
     restDelta: 0.001
   });
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Handle scroll-based animations
   useEffect(() => {
@@ -110,11 +111,23 @@ export default function Home() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
               <div className="flex items-center gap-2">
-                <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 bg-clip-text text-transparent animate-gradient">
+                <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 bg-clip-text text-transparent animate-gradient">
                   rares-ionescu.dev
                 </span>
               </div>
-              <div className="flex gap-8">
+              
+              {/* Mobile menu button */}
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="md:hidden p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                aria-label="Toggle menu"
+                aria-expanded={isMenuOpen}
+              >
+                {isMenuOpen ? <FaTimes className="text-xl" /> : <FaBars className="text-xl" />}
+              </button>
+
+              {/* Desktop Navigation */}
+              <div className="hidden md:flex gap-8">
                 {['about', 'skills', 'projects', 'experience', 'contact'].map((item) => (
                   <a
                     key={item}
@@ -127,149 +140,77 @@ export default function Home() {
                 ))}
               </div>
             </div>
+
+            {/* Mobile Navigation Menu */}
+            <motion.div
+              initial={false}
+              animate={{ height: isMenuOpen ? 'auto' : 0, opacity: isMenuOpen ? 1 : 0 }}
+              transition={{ duration: 0.2 }}
+              className="md:hidden overflow-hidden"
+            >
+              <div className="py-4 space-y-4">
+                {['about', 'skills', 'projects', 'experience', 'contact'].map((item) => (
+                  <a
+                    key={item}
+                    href={`#${item}`}
+                    onClick={() => setIsMenuOpen(false)}
+                    className="block px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors capitalize"
+                  >
+                    {item}
+                  </a>
+                ))}
+              </div>
+            </motion.div>
           </div>
         </nav>
 
         {/* Hero Section */}
-        <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
+        <section className="relative pt-24 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-gray-50/50 to-white dark:from-gray-900/50 dark:to-gray-900 z-0" />
           <div className="absolute inset-0 bg-grid-pattern opacity-[0.08] dark:opacity-[0.12]" />
           <div className="absolute inset-0 bg-dots-pattern opacity-[0.05] dark:opacity-[0.08]" />
           
-          {/* Animated background elements */}
-          <div className="absolute inset-0 overflow-hidden">
-            {[...Array(20)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute w-2 h-2 rounded-full bg-blue-500/20 dark:bg-blue-400/20"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                }}
-                animate={{
-                  y: [0, -100],
-                  opacity: [0, 1, 0],
-                }}
-                transition={{
-                  duration: Math.random() * 3 + 2,
-                  repeat: Infinity,
-                  delay: Math.random() * 2,
-                }}
-              />
-            ))}
-          </div>
-
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-center"
-            >
-              <motion.div
-                initial={{ scale: 0.95, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="inline-block mb-6"
-              >
-                <span className="px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 text-blue-600 dark:text-blue-400 text-sm font-medium border border-blue-200 dark:border-blue-800 animate-float">
-                  Computer Science Student & Aspiring Software Engineer
-                </span>
-              </motion.div>
-
+          <div className="max-w-7xl mx-auto relative z-10">
+            <div className="text-center">
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
-                className="text-5xl md:text-7xl font-bold mb-6 gradient-text"
+                transition={{ duration: 0.5 }}
+                className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6"
               >
-                Ionescu Rares-Andrei
+                Hi, I'm{" "}
+                <span className="text-blue-600 dark:text-blue-400">Rares-Andrei Ionescu</span>
               </motion.h1>
-
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed"
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="text-lg sm:text-xl lg:text-2xl text-gray-600 dark:text-gray-400 mb-8 sm:mb-12 max-w-3xl mx-auto"
               >
-                Passionate about software development and cybersecurity, building innovative solutions through code
+                A Computer Science student and Software Engineer passionate about building
+                innovative solutions and creating impactful software.
               </motion.p>
-
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.5 }}
-                className="flex flex-wrap justify-center gap-4 mb-12"
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center"
               >
-                <motion.a
+                <a
                   href="#contact"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="btn-gradient px-8 py-3 text-white rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300"
+                  className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-lg transition-colors duration-300"
                 >
                   Get in Touch
-                </motion.a>
-                <motion.a
+                </a>
+                <a
                   href="#projects"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-8 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+                  className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-700 transition-colors duration-300"
                 >
                   View Projects
-                </motion.a>
+                </a>
               </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1, duration: 0.5 }}
-                className="flex justify-center gap-6"
-              >
-                <motion.a
-                  href="https://github.com/yourusername"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.1, y: -2 }}
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors tooltip"
-                  data-tooltip="GitHub"
-                >
-                  <FaGithub className="text-2xl" />
-                </motion.a>
-                <motion.a
-                  href="https://linkedin.com/in/yourusername"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.1, y: -2 }}
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors tooltip"
-                  data-tooltip="LinkedIn"
-                >
-                  <FaLinkedin className="text-2xl" />
-                </motion.a>
-                <motion.a
-                  href="mailto:your.email@example.com"
-                  whileHover={{ scale: 1.1, y: -2 }}
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors tooltip"
-                  data-tooltip="Email"
-                >
-                  <FaEnvelope className="text-2xl" />
-                </motion.a>
-              </motion.div>
-            </motion.div>
+            </div>
           </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.5, duration: 0.5 }}
-            className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-          >
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <FaArrowDown className="text-2xl text-gray-400" />
-            </motion.div>
-          </motion.div>
         </section>
 
         {/* About Section */}
